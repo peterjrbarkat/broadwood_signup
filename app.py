@@ -120,6 +120,17 @@ with sched_col3:
 
 st.divider()
 
+# Leadership
+with st.container():
+    st.subheader("Leadership")
+    st.markdown("""
+    The Broadwood Network started as a connect group that grew to weekends away twice a year. 
+    
+    There is a team that put it together led by Benji Williams, David Cornish and Peter Barkat.
+    """)
+
+st.divider()
+
 # House Rules
 with st.container():
     st.subheader("House Rules")
