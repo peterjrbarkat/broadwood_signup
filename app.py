@@ -9,7 +9,7 @@ import streamlit as st
 st.set_page_config(
     page_title="Broadwood Weekend - Direct Debit Setup",
     page_icon="🏠",
-    layout="wide",
+    layout="centered",
     initial_sidebar_state="collapsed",
 )
 
@@ -17,23 +17,102 @@ st.markdown(
     """
 <style>
     .main .block-container {
-        max-width: 640px;
-        padding: 2rem 2rem 4rem;
+        max-width: 620px;
+        padding: 2.5rem 2rem 4rem;
     }
-    .payment-total {
-        font-size: 1.25rem;
+
+    /* Summary card */
+    .summary-card {
+        background: #f6f8fb;
+        border: 1px solid #e3e8ef;
+        border-radius: 16px;
+        padding: 1.5rem 1.75rem;
+        margin: 0.5rem 0 1.5rem;
+        text-align: center;
+    }
+    .summary-card .total-label {
+        font-size: 0.9rem;
+        color: #667085;
+        margin: 0;
+    }
+    .summary-card .total-value {
+        font-size: 1.1rem;
         font-weight: 600;
-        margin: 1rem 0 0.25rem;
+        color: #344054;
+        margin: 0 0 0.75rem;
     }
-    .payment-monthly {
-        font-size: 1.75rem;
+    .summary-card .monthly-label {
+        font-size: 0.9rem;
+        color: #667085;
+        margin: 0;
+    }
+    .summary-card .monthly-value {
+        font-size: 2.4rem;
+        font-weight: 800;
+        color: #101828;
+        line-height: 1.1;
+        margin: 0.15rem 0 0;
+    }
+    .summary-card .monthly-value span {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #667085;
+    }
+
+    /* Direct debit button */
+    .dd-button {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        background: #2e7d32;
+        color: #ffffff !important;
+        font-size: 0.95rem;
         font-weight: 700;
-        margin: 0 0 1rem;
+        text-decoration: none !important;
+        padding: 0.6rem 1rem;
+        border-radius: 10px;
+        transition: background 0.15s ease, transform 0.05s ease;
+        box-shadow: 0 1px 2px rgba(16, 24, 40, 0.15);
     }
+    .dd-button:hover {
+        background: #1b5e20;
+    }
+    .dd-button:active {
+        transform: translateY(1px);
+    }
+
+    /* Secondary (additional contribution) button */
+    .dd-button-secondary {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        background: #f2f4f7;
+        color: #475467 !important;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-decoration: none !important;
+        padding: 0.45rem 0.9rem;
+        border-radius: 8px;
+        border: 1px solid #e3e8ef;
+        margin-top: 0.6rem;
+        transition: background 0.15s ease, transform 0.05s ease;
+    }
+    .dd-button-secondary:hover {
+        background: #e9edf3;
+    }
+    .dd-button-secondary:active {
+        transform: translateY(1px);
+    }
+
+    /* Higher-bursary hint */
     .payment-note {
-        font-size: 0.875rem;
-        color: #666;
-        margin-top: 0.5rem;
+        font-size: 0.8rem;
+        color: #667085;
+        text-align: center;
+        margin-top: 0.75rem;
+        line-height: 1.5;
     }
 </style>
 """,
@@ -85,7 +164,7 @@ room_label = st.selectbox(
     index=0,
 )
 
-st.markdown(
+st.caption(
     "We never want money to be an issue so if a partial or full bursary is "
     "required then please reach out to [peterbarkat@gmail.com](mailto:peterbarkat@gmail.com)."
 )
@@ -107,13 +186,23 @@ payment_link = PAYMENT_LINKS[(room_key, bursary)]
 
 st.divider()
 
-st.markdown(f'<p class="payment-total">Total every {MONTHS} months: £{total}</p>', unsafe_allow_html=True)
-st.markdown(f'<p class="payment-monthly">Ongoing monthly payment: £{monthly}</p>', unsafe_allow_html=True)
-
 st.markdown(
-    f"[Set up your direct debit for £{monthly}/month]({payment_link})",
+    f"""
+<div class="summary-card">
+    <p class="total-label">Total over {MONTHS} months</p>
+    <p class="total-value">£{total}</p>
+    <p class="monthly-label">Ongoing monthly payment</p>
+    <p class="monthly-value">£{monthly}<span> / month</span></p>
+</div>
+""",
+    unsafe_allow_html=True,
 )
 
+st.markdown(
+    f'<a class="dd-button" href="{payment_link}" target="_blank" rel="noopener">'
+    f"Set up direct debit · £{monthly}/month</a>",
+    unsafe_allow_html=True,
+)
 
 bursary_index = BURSARY_OPTIONS.index(bursary)
 if bursary_index < len(BURSARY_OPTIONS) - 1:
@@ -122,9 +211,7 @@ if bursary_index < len(BURSARY_OPTIONS) - 1:
     higher_monthly = monthly_amount(higher_total)
     higher_link = PAYMENT_LINKS[(room_key, higher_bursary)]
     st.markdown(
-        f'<p class="payment-note">With a £{higher_bursary} bursary contribution, '
-        f'your monthly payment would be £{higher_monthly}. '
-        f'<a href="{higher_link}">Set up direct debit at this amount</a>.</p>',
+        f'<a class="dd-button-secondary" href="{higher_link}" target="_blank" rel="noopener">'
+        f"Add a £{higher_bursary} bursary contribution · £{higher_monthly}/month</a>",
         unsafe_allow_html=True,
     )
-
