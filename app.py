@@ -120,9 +120,9 @@ st.markdown(
 )
 
 ROOMS = {
-    "Timber Village £135": {"base": 135, "key": "Timber Village"},
-    "Share En Suite £185": {"base": 185, "key": "Shared En suite"},
-    "Single Occupancy En Suite £255": {"base": 255, "key": "Single Occupancy En Suite"},
+    "Timber Village £145": {"base": 145, "key": "Timber Village"},
+    "Share En Suite £195": {"base": 195, "key": "Shared En suite"},
+    "Single Occupancy En Suite £265": {"base": 265, "key": "Single Occupancy En Suite"},
 }
 
 BURSARY_OPTIONS = [0, 25, 50, 100]
